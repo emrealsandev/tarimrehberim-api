@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText('description');
             $table->longText('image');
             $table->string('region');
+            $table->string('type');
             $table->timestamps();
         });
     }

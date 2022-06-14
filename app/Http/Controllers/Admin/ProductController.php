@@ -48,6 +48,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required',
             'inventory' => 'required',
+            'price' => 'required|numeric',
             'image' => 'string',
         ]);
 
@@ -59,6 +60,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'image' => $request->image,
+            'price' => $request->price,
             'inventory' => $request->inventory,
         ]);
 
@@ -110,6 +112,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required',
             'inventory' => 'required',
+            'price' => 'required|numeric',
             'image' => 'string',
         ]);
 
@@ -119,6 +122,7 @@ class ProductController extends Controller
         $product->name = $input['name'];
         $product->description = $input['description'];
         $product->inventory = $input['inventory'];
+        $product->price = $input['price'];
         $product->image = $input['image'];
         $product->save();
         return response()->json(['Ürün güncellendi', new ProductResource($product)]);

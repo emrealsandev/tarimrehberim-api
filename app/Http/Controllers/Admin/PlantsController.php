@@ -15,8 +15,28 @@ class PlantsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $featuredRegion = $request->get('featuredRegion');
+
+
+        $plants = Plant::query()
+            ->selectRaw('*, IF("'.$featuredRegion.'" != "" AND region = "'.$featuredRegion.'", 1, 0) as isFeaturedRegion')
+            ->orderBy('isFeaturedRegion', 'DESC')
+            ->get();
+
+
+        $response = [
+            'success' => true,
+            'data' => PlantResource::collection($plants),
+            'message' => 'Plants Fetched'
+        ];
+        return response()->json($response,200);
+    }
+
+
+
+    public function aIndex(){
         $data = Plant::all();
         $response = [
             'success' => true,
@@ -48,6 +68,7 @@ class PlantsController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required',
             'region' => 'required|string|max:255',
+            'type' => 'required| string',
             'image' => 'string',
         ]);
 
@@ -60,6 +81,7 @@ class PlantsController extends Controller
             'description' => $request->description,
             'image' => $request->image,
             'region' => $request->region,
+            'type' => $request->type,
         ]);
 
         return response()->json(['Kayıt Başarıyla Eklendi', new PlantResource($plants)]);
@@ -110,6 +132,7 @@ class PlantsController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required',
             'region' => 'required|string|max:255',
+            'type' => 'required|string',
             'image' => 'string',
         ]);
 
@@ -119,6 +142,7 @@ class PlantsController extends Controller
         $plant->name = $input['name'];
         $plant->description = $input['description'];
         $plant->region = $input['region'];
+        $plant->type = $input['type'];
         $plant->image = $input['image'];
         $plant->save();
         return response()->json(['Bitki güncellendi', new PlantResource($plant)]);

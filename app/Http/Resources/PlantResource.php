@@ -20,6 +20,7 @@ class PlantResource extends JsonResource
             'description' => $this->description,
             'image' => $this->image,
             'region' => $this->region,
+            'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
